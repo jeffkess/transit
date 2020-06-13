@@ -1,3 +1,4 @@
+
 ## General Transit Feed Specification Reference
 
 **Revised January 17, 2019. See [Revision History](../../CHANGES.md) for more details.**
@@ -169,7 +170,7 @@ File: **Required**
 |  Field Name | Type | Required | Description |
 |  ------ | ------ | ------ | ------ |
 |  `route_id` | ID referencing `routes.route_id` | **Required** | Identifies a route. |
-|  `service_id` | ID referencing `calendar.service_id` or `calendar_dates.service_id` | **Required** | Identifies a set of dates when service is available for one or more routes. |
+|  `service_id` | ID referencing `calendar.service_id` or `calendar_dates.service_id` | **Conditionally Required** | Identifies a set of dates when service is available for one or more routes.<br><br>**Required *unless*** the `trip_id` has an associated `service_id` defined in `frequencies.txt`.|
 |  `trip_id` | ID | **Required** | Identifies a trip. |
 |  `trip_headsign` | Text | Optional | Text that appears on signage identifying the trip's destination to riders. Use this field to distinguish between different patterns of service on the same route. If the headsign changes during a trip, `trip_headsign` can be overridden by specifying values for the `stop_times.stop_headsign`. |
 |  `trip_short_name` | Text | Optional | Public facing text used to identify the trip to riders, for instance, to identify train numbers for commuter rail trips. If riders do not commonly rely on trip names, leave this field empty.  A `trip_short_name` value, if provided, should uniquely identify a trip within a service day; it should not be used for destination names or limited/express designations. |
@@ -308,6 +309,7 @@ File: **Optional**
 |  Field Name | Type | Required | Description |
 |  ------ | ------ | ------ | ------ |
 |  `trip_id` | ID referencing `trips.trip_id` | **Required** | Identifies a trip to which the specified headway of service applies. |
+|  `service_id` | ID referencing `calendar.service_id` or `calendar_dates.service_id` | **Conditionally Required** | Identifies a set of dates when service is available for one or more routes.<br><br>**Required *if*** the referenced `trip_id` does not have an associated `service_id` in `trips.txt`.|
 |  `start_time` | Time | **Required** | Time at which the first vehicle departs from the first stop of the trip with the specified headway. |
 |  `end_time` | Time | **Required** | Time at which service changes to a different headway (or ceases) at the first stop in the trip. |
 |  `headway_secs` | Non-negative integer | **Required** | Time, in seconds, between departures from the same stop (headway) for the trip, during the time interval specified by `start_time` and `end_time`. Multiple headways for the same trip are allowed, but may not overlap. New headways may start at the exact time the previous headway ends.  |
